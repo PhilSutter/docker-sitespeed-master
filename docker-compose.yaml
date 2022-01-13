@@ -1,0 +1,60 @@
+version: '3'
+services:
+
+    sitespeed:
+      image: sitespeedio/sitespeed.io
+      command: ---graphite.host graphite --graphite.auth root:root --graphite.port 2003 --cookie _lbo_internal_site_version=2 --config config.json urls.txt
+      restart: always
+      shm_size: 1g
+      volumes:
+        - ./sitespeed-result:/sitespeed.io/sitespeed-result
+        - ./sitespeed/config.json:/sitespeed.io/config.json
+        - ./sitespeed/urls.txt:/sitespeed.io/urls.txt
+
+    graphite:
+      image: sitespeedio/graphite:1.1.5-12
+      hostname: graphite
+      ports:
+        - "2003:2003"
+        - "8080:80"
+      restart: always
+      volumes:
+        - whisper:/opt/graphite/storage/whisper
+        - ./graphite/graphite.db:/opt/graphite/storage/graphite.db
+        - ./graphite/conf/storage-schemas.conf:/opt/graphite/conf/storage-schemas.conf
+        - ./graphite/conf/storage-aggregation.conf:/opt/graphite/conf/storage-aggregation.conf
+        - ./graphite/conf/carbon.conf:/opt/graphite/conf/carbon.conf
+
+
+    grafana:
+      image: grafana/grafana:6.4.3
+      hostname: grafana
+      depends_on:
+        - graphite
+      links:
+        - graphite
+      ports:
+        - "80:3000"
+      environment:
+        - GF_SECURITY_ADMIN_PASSWORD=wl9hjang
+        - GF_SECURITY_ADMIN_USER=ghosty
+        - GF_AUTH_ANONYMOUS_ENABLED=true
+        - GF_USERS_ALLOW_SIGN_UP=false
+        - GF_USERS_ALLOW_ORG_CREATE=false
+      volumes:
+        - grafana:/var/lib/grafana
+        - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+        - ./grafana/ldap.toml:/etc/grafana/ldap.toml
+      restart: always
+
+    grafana-setup:
+      image: sitespeedio/grafana-bootstrap:10.2.0
+      links:
+        - grafana
+      environment:
+        - GF_PASSWORD=wl9hjang
+        - GF_USER=ghosty
+
+volumes:
+    grafana:
+    whisper:

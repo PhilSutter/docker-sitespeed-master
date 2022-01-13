@@ -1,0 +1,5 @@
+https://www.laboutiqueofficielle.com/ homepage
+https://www.laboutiqueofficielle.com/promos.html listing_promo
+https://www.laboutiqueofficielle.com/nouveautes.html listing_new
+https://www.laboutiqueofficielle.com/achat-baskets-basses/adidas-baskets-continental-80-g27706-footwear-white-scarlet-core-navy-163450.html product_adidas_basket_163450
+

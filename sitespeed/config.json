@@ -1,0 +1,21 @@
+{
+  "browsertime": {
+    "visualMetrics": true,
+    "speedIndex": true,
+    "visualElements": true,
+    "iterations": 1,
+    "browser": "chrome",
+    "video": true,
+    "visualMetric": true,
+    "chrome": {
+      "collectConsoleLog": true,
+      "enableTraceScreenshots": true
+    }
+  },
+  "cpu": true,
+  "gzipHAR": true,
+  "html": {
+    "fetchHARFiles": true,
+    "showScript": true
+  }
+}
